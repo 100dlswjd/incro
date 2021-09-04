@@ -39,14 +39,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&WndClass);
 
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	WndClass.lpszMenuName = NULL;
 	WndClass.lpszClassName = keyboard_macro;
 	WndClass.lpfnWndProc = keyProc;
 	RegisterClass(&WndClass);
 
+
 	WndClass.lpszClassName = mouse_macro;
 	WndClass.lpfnWndProc = mouseProc;
 	RegisterClass(&WndClass);
+
 
 	WndClass.lpszClassName = time_macro;
 	WndClass.lpfnWndProc = timeProc;
@@ -64,6 +67,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 }
 
 LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
+	HDC hdc;
+	PAINTSTRUCT ps;
+	LPCWSTR temp_text = TEXT("시간을 입력해주세요(1초 = 1000)");
 	switch (iMessage) {
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
@@ -71,6 +77,9 @@ LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
 		return 0;
+	case WM_PAINT:
+		hdc = BeginPaint(hWnd, &ps);
+		TextOut(hdc, 20,20, temp_text, lstrlen(temp_text));
 	case WM_CREATE:
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		return 0;
@@ -86,13 +95,20 @@ LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 
 
 LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
-
+	HDC hdc;
+	PAINTSTRUCT ps;
+	LPCWSTR temp_text = TEXT("마우스 좌표를 입력해주세요");
 	switch (iMessage) {
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
 		((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 200;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+		return 0;
+	case WM_PAINT:
+		hdc = BeginPaint(hWnd, &ps);
+		TextOut(hdc, 20, 20, temp_text, lstrlen(temp_text));
+		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_CREATE:
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
@@ -110,6 +126,7 @@ LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
 	PAINTSTRUCT ps;
+	LPCWSTR temp_text = TEXT("키보드를 입력하세요");
 	switch (iMessage) {
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
@@ -119,7 +136,8 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-
+		TextOut(hdc, 20, 20, temp_text, lstrlen(temp_text));
+		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_CREATE:
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
