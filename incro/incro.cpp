@@ -2,9 +2,22 @@
 #include"resource.h"
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK keyProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK mouseProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK timeProc(HWND, UINT, WPARAM, LPARAM);
+
 HINSTANCE g_hInst;
+
 HWND hWndMain;
+HWND Wndkeyboard;
+HWND Wndmouse;
+HWND Wndtime;
+
 LPCTSTR lpszClass = TEXT("Incro");
+LPCTSTR keyboard_macro = TEXT("키보드 설정");
+LPCTSTR mouse_macro = TEXT("마우스 설정");
+LPCTSTR time_macro = TEXT("시간 설정");
+
 int screenCx = GetSystemMetrics(SM_CXSCREEN);
 int screenCy = GetSystemMetrics(SM_CYSCREEN);
 
@@ -26,6 +39,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&WndClass);
 
+	WndClass.lpszMenuName = NULL;
+	WndClass.lpszClassName = keyboard_macro;
+	WndClass.lpfnWndProc = keyProc;
+	RegisterClass(&WndClass);
+
+	WndClass.lpszClassName = mouse_macro;
+	WndClass.lpfnWndProc = mouseProc;
+	RegisterClass(&WndClass);
+
+	WndClass.lpszClassName = time_macro;
+	WndClass.lpfnWndProc = timeProc;
+	RegisterClass(&WndClass);
+
 	hWnd = CreateWindow(lpszClass, lpszClass, WS_SYSMENU | WS_MINIMIZEBOX , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, (HMENU)NULL, hInstance, NULL);
 
 	ShowWindow(hWnd, nCmdShow);
@@ -37,6 +63,76 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	return (int)Message.wParam;
 }
 
+LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
+	switch (iMessage) {
+	case WM_GETMINMAXINFO:
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+		return 0;
+	case WM_CREATE:
+		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
+		return 0;
+	case WM_CLOSE:
+		ShowWindow(hWnd, SW_HIDE);
+		return 0;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
+
+
+LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
+
+	switch (iMessage) {
+	case WM_GETMINMAXINFO:
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+		return 0;
+	case WM_CREATE:
+		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
+		return 0;
+	case WM_CLOSE:
+		ShowWindow(hWnd, SW_HIDE);
+		return 0;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
+
+LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
+	HDC hdc;
+	PAINTSTRUCT ps;
+	switch (iMessage) {
+	case WM_GETMINMAXINFO:
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+		return 0;
+	case WM_PAINT:
+		hdc = BeginPaint(hWnd, &ps);
+
+		return 0;
+	case WM_CREATE:
+		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
+		return 0;
+	case WM_CLOSE:
+		ShowWindow(hWnd, SW_HIDE);
+		return 0;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
 	PAINTSTRUCT ps;
@@ -59,18 +155,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		CreateWindow(TEXT("button"), TEXT("추가"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 20, 200, 60, 25, hWnd, (HMENU)5, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("삽입"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 100, 200, 60, 25, hWnd, (HMENU)6, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("반복"), WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 180, 200, 60, 25, hWnd, (HMENU)7, g_hInst, NULL);
+
+		Wndkeyboard = CreateWindow(keyboard_macro, keyboard_macro, WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, (HMENU)NULL, g_hInst, NULL);
+
+		Wndmouse = CreateWindow(mouse_macro, mouse_macro, WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, (HMENU)NULL, g_hInst, NULL);
+
+		Wndtime = CreateWindow(time_macro, time_macro, WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, (HMENU)NULL,g_hInst, NULL);
+
 		return 0;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case 1:
-			MessageBox(hWnd, TEXT("키보드 클릭했지 ?"),TEXT("incro"),MB_OK);
-			CreateWindow(TEXT("button"), TEXT("이동"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 10, 30, 30, hWnd, (HMENU)1, g_hInst, NULL);			
+			ShowWindow(Wndkeyboard, SW_SHOW);
 			break;
 		case 2:
-			MessageBox(hWnd, TEXT("마우스 클릭했지 ?"), TEXT("incro"), MB_OK);
+			ShowWindow(Wndmouse, SW_SHOW);
 			break;
 		case 3:
-			MessageBox(hWnd, TEXT("시간 클릭했지 ?"), TEXT("incro"), MB_OK);
+			ShowWindow(Wndtime, SW_SHOW);
 			break;
 		case 4:
 			MessageBox(hWnd, TEXT("지우기 클릭했지 ?"), TEXT("incro"), MB_OK);
@@ -80,10 +182,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 		EndPaint(hWnd, &ps);
 		return 0;
+	case WM_CLOSE:
+	{
+		int temp;
+		temp = MessageBox(hWnd, TEXT("저장이 안되어있습니다 \n종료하시겠습니까 ?"), TEXT("경고"), MB_OKCANCEL);
+		if (temp == IDOK) {
+			break;
+		}
+		else {
+			return 0;
+		}
+	}
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
 	}
 	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
 }
-

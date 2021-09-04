@@ -70,7 +70,7 @@ BEGIN
         MENUITEM "마우스 설정",                      ID_40004
         MENUITEM "기타 설정",                       ID_40005
     END
-    MENUITEM "정보",                          0
+    MENUITEM "정보",                          ID_40010
 END
 
 #endif    // 한국어(대한민국) resources

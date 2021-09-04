@@ -1,1 +1,2 @@
 D:\git\incro\incro\Debug\incro.exe
+C:\Users\인정\Desktop\github\incro\incro\Debug\incro.exe
