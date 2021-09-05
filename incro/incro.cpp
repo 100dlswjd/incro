@@ -1,6 +1,8 @@
 #include<windows.h>
 #include"resource.h"
 
+#define ID_EDIT 100
+
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK keyProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK mouseProc(HWND, UINT, WPARAM, LPARAM);
@@ -8,6 +10,7 @@ LRESULT CALLBACK timeProc(HWND, UINT, WPARAM, LPARAM);
 
 HINSTANCE g_hInst;
 
+HWND hEdit;
 HWND hWndMain;
 HWND Wndkeyboard;
 HWND Wndmouse;
@@ -67,9 +70,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 }
 
 LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
+	TCHAR str[128] = TEXT("aaaaaaaaaaaaa");
 	HDC hdc;
 	PAINTSTRUCT ps;
-	LPCWSTR temp_text = TEXT("시간을 입력해주세요(1초 = 1000)");
+	LPCWSTR temp_text = TEXT("시간(초)를 입력해주세요.\n범위 : 0.001 ~ 300초");
 	switch (iMessage) {
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
@@ -79,9 +83,23 @@ LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		TextOut(hdc, 20,20, temp_text, lstrlen(temp_text));
+		TextOut(hdc, 20, 20, temp_text, lstrlen(temp_text));		
+		//hEdit = CreateWindow(TEXT("edit"), NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 10, 10, 200, 25, hWnd, (HMENU)ID_EDIT,g_hInst ,NULL);
+		EndPaint(hWnd, &ps);
+		return 0;
+	/*case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case ID_EDIT:
+			switch (HIWORD(wParam)) {
+			case EN_CHANGE:
+				GetWindowText(hEdit, str, 128);
+				SetWindowText(hWnd,str);
+			}
+		}
+		return 0;*/
 	case WM_CREATE:
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
+		//GetWindowText(hEdit, str, 128);
 		return 0;
 	case WM_CLOSE:
 		ShowWindow(hWnd, SW_HIDE);
