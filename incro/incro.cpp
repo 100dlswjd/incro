@@ -21,6 +21,8 @@ LPCTSTR keyboard_macro = TEXT("키보드 설정");
 LPCTSTR mouse_macro = TEXT("마우스 설정");
 LPCTSTR time_macro = TEXT("시간 설정");
 
+POINT ptMouse;
+
 int screenCx = GetSystemMetrics(SM_CXSCREEN);
 int screenCy = GetSystemMetrics(SM_CYSCREEN);
 
@@ -42,7 +44,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	WndClass.style = CS_HREDRAW | CS_VREDRAW ;
 	RegisterClass(&WndClass);
 
-	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	//WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	WndClass.lpszMenuName = NULL;
 	WndClass.lpszClassName = keyboard_macro;
 	WndClass.lpfnWndProc = keyProc;
@@ -112,31 +114,48 @@ LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 
 LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
-	PAINTSTRUCT ps;
-	LPCWSTR temp_text = TEXT("마우스 좌표를 입력해주세요");
+	PAINTSTRUCT ps;	
+	LPCWSTR temp_X = TEXT("X : ");
+	LPCWSTR temp_Y = TEXT("Y : ");
+	TCHAR xyPos[128];
 	HFONT hFont, OldFont;
-
+	
 	switch (iMessage) {
+	case WM_MOUSEMOVE:
+		GetCursorPos(&ptMouse);
+		InvalidateRect(hWnd, NULL, FALSE);
+		return 0;
 	case WM_GETMINMAXINFO:
-		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
-		((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 200;
-		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
-		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 250;
+		((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 250;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 250;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 250;
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		hFont = CreateFont(12, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH | FF_ROMAN, TEXT("굴림"));
 		OldFont = (HFONT)SelectObject(hdc, hFont);
-		TextOut(hdc, 20, 20, temp_text, lstrlen(temp_text));
+		//TextOut(hdc, 20, 20, temp_X, lstrlen(temp_X));
+		//TextOut(hdc, 80, 20, temp_Y, lstrlen(temp_Y));
+		wsprintf(xyPos, TEXT("X : %04d   Y : %04d"), ptMouse.x, ptMouse.y);
+		TextOut(hdc, 20, 20, xyPos, lstrlen(xyPos));
+		TextOut(hdc, 140, 40, temp_X, lstrlen(temp_X));
+		TextOut(hdc, 140, 70, temp_Y, lstrlen(temp_Y));
 		SelectObject(hdc, OldFont);
 		DeleteObject(hFont);
 		EndPaint(hWnd, &ps);
-		return 0;
+		return 0;	
 	case WM_CREATE:
-		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 100, 40, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
-		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 112, 100, 40, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
-		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 130, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
-		CreateWindow(TEXT("button"), TEXT("이동"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 40, 60, 20, hWnd, (HMENU)1, g_hInst, NULL);
+		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 180, 40, 40, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
+		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 180, 70, 40, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
+		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 170, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
+		CreateWindow(TEXT("button"), TEXT("이동"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 40, 50, 20, hWnd, (HMENU)1, g_hInst, NULL);
+		CreateWindow(TEXT("button"), TEXT("왼쪽클릭"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 60, 80, 20, hWnd, (HMENU)2, g_hInst, NULL);
+		CreateWindow(TEXT("button"), TEXT("왼쪽 누른상태"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 80, 130, 20, hWnd, (HMENU)3, g_hInst, NULL);
+		CreateWindow(TEXT("button"), TEXT("땐 상태"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 100, 70, 20, hWnd, (HMENU)4, g_hInst, NULL);
+		CreateWindow(TEXT("button"), TEXT("오른쪽 클릭"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 120,110, 20, hWnd, (HMENU)5, g_hInst, NULL);
+		CreateWindow(TEXT("button"), TEXT("오른쪽 누른상태"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 140, 150, 20, hWnd, (HMENU)6, g_hInst, NULL);
+
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		return 0;
 	case WM_CLOSE:
