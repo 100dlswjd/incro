@@ -173,6 +173,8 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	LPCWSTR temp_text = TEXT("추가할 키를 입력하세요");
 	HFONT hFont, OldFont;
+	TCHAR Key_push[128];	
+
 	switch (iMessage) {
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 200;
@@ -180,23 +182,51 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
 		return 0;
+	case WM_KEYDOWN:
+		hdc = BeginPaint(hWnd, &ps);
+		switch (wParam) {
+		case VK_LEFT:
+			wsprintf(Key_push, TEXT("LEFT"));
+			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			MessageBox(hWnd, TEXT("LEFT"), TEXT("LEFT 누름"), MB_OK);
+			return 0;
+		case VK_RIGHT:
+			wsprintf(Key_push, TEXT("RIGHT"));
+			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			MessageBox(hWnd, TEXT("RIGHT"), TEXT("RIGHT 누름"), MB_OK);
+			return 0;
+		case VK_UP:
+			wsprintf(Key_push, TEXT("UP"));
+			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			MessageBox(hWnd, TEXT("UP"), TEXT("UP 누름"), MB_OK);
+			return 0;
+		case VK_DOWN:
+			wsprintf(Key_push, TEXT("DOWN"));
+			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			MessageBox(hWnd, TEXT("DOWN"), TEXT("DOWN 누름"), MB_OK);
+			return 0;
+		}
+		
+		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		hFont = CreateFont(12, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH | FF_ROMAN, TEXT("굴림"));
 		OldFont = (HFONT)SelectObject(hdc, hFont);
 		TextOut(hdc, 20, 20, temp_text, lstrlen(temp_text));
+		//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
 		SelectObject(hdc, OldFont);
 		DeleteObject(hFont);
 		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_CREATE:
-		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 100, 81, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
+		//CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 100, 81, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
 		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 130, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		return 0;
 	case WM_CLOSE:
 		ShowWindow(hWnd, SW_HIDE);
 		return 0;
+	
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
