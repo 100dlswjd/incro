@@ -173,6 +173,8 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	LPCWSTR temp_text = TEXT("추가할 키를 입력하세요");
 	HFONT hFont, OldFont;
+	static int x = 20;
+	static int y = 20;
 	TCHAR Key_push[128];	
 
 	switch (iMessage) {
@@ -187,31 +189,36 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam) {
 		case VK_LEFT:
 			wsprintf(Key_push, TEXT("LEFT"));
-			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			TextOut(hdc, 40, 40, temp_text, lstrlen(temp_text));
 			MessageBox(hWnd, TEXT("LEFT"), TEXT("LEFT 누름"), MB_OK);
-			return 0;
+			x -= 5; 
+			break;
 		case VK_RIGHT:
-			wsprintf(Key_push, TEXT("RIGHT"));
-			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
-			MessageBox(hWnd, TEXT("RIGHT"), TEXT("RIGHT 누름"), MB_OK);
-			return 0;
+			//wsprintf(Key_push, TEXT("RIGHT"));
+			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			//MessageBox(hWnd, TEXT("RIGHT"), TEXT("RIGHT 누름"), MB_OK);
+			x += 5;
+			break;
 		case VK_UP:
-			wsprintf(Key_push, TEXT("UP"));
-			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
-			MessageBox(hWnd, TEXT("UP"), TEXT("UP 누름"), MB_OK);
-			return 0;
+			//wsprintf(Key_push, TEXT("UP"));
+			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			//MessageBox(hWnd, TEXT("UP"), TEXT("UP 누름"), MB_OK);
+			y -= 5;
+			break;
 		case VK_DOWN:
-			wsprintf(Key_push, TEXT("DOWN"));
-			TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
-			MessageBox(hWnd, TEXT("DOWN"), TEXT("DOWN 누름"), MB_OK);
-			return 0;
+			//wsprintf(Key_push, TEXT("DOWN"));
+			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
+			//MessageBox(hWnd, TEXT("DOWN"), TEXT("DOWN 누름"), MB_OK);
+			y += 5;
+			break;
 		}
-		
+		InvalidateRect(hWnd, NULL, TRUE);
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		hFont = CreateFont(12, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH | FF_ROMAN, TEXT("굴림"));
 		OldFont = (HFONT)SelectObject(hdc, hFont);
+		//TextOut(hdc, x, y, temp_text, lstrlen(temp_text));
 		TextOut(hdc, 20, 20, temp_text, lstrlen(temp_text));
 		//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
 		SelectObject(hdc, OldFont);
