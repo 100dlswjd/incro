@@ -1,2 +1,3 @@
 ﻿  incro.cpp
+D:\git\incro\incro\incro.cpp(178,8): warning C4101: 'Key_push' :참조되지 않은 지역 변수입니다.
   incro.vcxproj -> D:\git\incro\incro\x64\Debug\incro.exe
