@@ -173,6 +173,7 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	LPCWSTR temp_text = TEXT("추가할 키를 입력하세요");
 	HFONT hFont, OldFont;
+	static HWND InEdit;
 	static int x = 20;
 	static int y = 20;
 	TCHAR Key_push[128];	
@@ -188,11 +189,13 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 		switch (wParam) {
 		case VK_LEFT:
+			SetWindowText(InEdit, TEXT("LEFT"));
 			//wsprintf(Key_push, TEXT("LEFT"));
 			//TextOut(hdc, 40, 40, temp_text, lstrlen(temp_text));
 			//MessageBox(hWnd, TEXT("LEFT"), TEXT("LEFT 누름"), MB_OK);			
 			break;
 		case VK_RIGHT:
+			SetWindowText(InEdit, TEXT("RIGHT"));
 			//wsprintf(Key_push, TEXT("RIGHT"));
 			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
 			//MessageBox(hWnd, TEXT("RIGHT"), TEXT("RIGHT 누름"), MB_OK);			
@@ -226,7 +229,7 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 130, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
 		CreateWindow(TEXT("button"), TEXT("한번누름"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | WS_GROUP, 20, 40, 90, 30, hWnd, (HMENU)1, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("누르고있기"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON , 20, 65, 110, 30, hWnd, (HMENU)1, g_hInst, NULL);
-		
+		InEdit = CreateWindow(TEXT("edit"), NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED , 20, 100, 80, 20, hWnd, (HMENU)2, g_hInst, NULL);
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		return 0;
 	case WM_CLOSE:
