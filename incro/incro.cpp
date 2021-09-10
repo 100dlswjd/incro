@@ -187,9 +187,12 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_KEYDOWN:
 		hdc = BeginPaint(hWnd, &ps);
+		Key_push = wParam;
+		SetWindowText(InEdit, LOWORD(wParam));
 		switch (wParam) {
+			
 		case VK_LEFT:
-			SetWindowText(InEdit, TEXT("LEFT"));
+			SetWindowText(InEdit, LOWORD(wParam));
 			//wsprintf(Key_push, TEXT("LEFT"));
 			//TextOut(hdc, 40, 40, temp_text, lstrlen(temp_text));
 			//MessageBox(hWnd, TEXT("LEFT"), TEXT("LEFT ´©¸§"), MB_OK);			
