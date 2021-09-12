@@ -1,2 +1,0 @@
-C:\Users\인정\Desktop\github\incro\incro\x64\Debug\incro.exe
-D:\git\incro\incro\x64\Debug\incro.exe
