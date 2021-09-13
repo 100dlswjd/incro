@@ -185,35 +185,67 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
 		return 0;
-	case WM_KEYDOWN:
+	case WM_CHAR:
 		hdc = BeginPaint(hWnd, &ps);
-		Key_push = wParam;
-		SetWindowText(InEdit, LOWORD(wParam));
+		wsprintf(Key_push, TEXT("%c"), wParam);
+		SetWindowText(InEdit, Key_push);
+		InvalidateRect(hWnd, NULL, TRUE);
+		return 0;
+	case WM_KEYDOWN:				
 		switch (wParam) {
-			
 		case VK_LEFT:
-			SetWindowText(InEdit, LOWORD(wParam));
+			wsprintf(Key_push, TEXT("%s"), TEXT("LEFT"));
 			//wsprintf(Key_push, TEXT("LEFT"));
 			//TextOut(hdc, 40, 40, temp_text, lstrlen(temp_text));
 			//MessageBox(hWnd, TEXT("LEFT"), TEXT("LEFT 누름"), MB_OK);			
 			break;
 		case VK_RIGHT:
-			SetWindowText(InEdit, TEXT("RIGHT"));
+			wsprintf(Key_push, TEXT("%s"), TEXT("RIGHT"));
 			//wsprintf(Key_push, TEXT("RIGHT"));
 			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
 			//MessageBox(hWnd, TEXT("RIGHT"), TEXT("RIGHT 누름"), MB_OK);			
 			break;
 		case VK_UP:
+			wsprintf(Key_push, TEXT("%s"), TEXT("UP"));
 			//wsprintf(Key_push, TEXT("UP"));
 			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
 			//MessageBox(hWnd, TEXT("UP"), TEXT("UP 누름"), MB_OK);			
 			break;
 		case VK_DOWN:
+			wsprintf(Key_push, TEXT("%s"), TEXT("DOWN"));
 			//wsprintf(Key_push, TEXT("DOWN"));
 			//TextOut(hdc, 20, 50, Key_push, lstrlen(Key_push));
 			//MessageBox(hWnd, TEXT("DOWN"), TEXT("DOWN 누름"), MB_OK);			
 			break;
+		case VK_SHIFT:
+			wsprintf(Key_push, TEXT("%s"), TEXT("SHIFT"));
+			break;
+		case VK_CONTROL:
+			wsprintf(Key_push, TEXT("%s"), TEXT("CONTROL"));
+			break;
+		case VK_SPACE:
+			wsprintf(Key_push, TEXT("%s"), TEXT("SPACE"));
+			break;
+		case VK_INSERT:
+			wsprintf(Key_push, TEXT("%s"), TEXT("INSERT"));
+			break;
+		case VK_HOME:
+			wsprintf(Key_push, TEXT("%s"), TEXT("HOME"));
+			break;
+		case VK_PRIOR:
+			wsprintf(Key_push, TEXT("%s"), TEXT("PAGEUP"));
+			break;
+		case VK_DELETE:
+			wsprintf(Key_push, TEXT("%s"), TEXT("DELETE"));
+			break;
+		case VK_END:
+			wsprintf(Key_push, TEXT("%s"), TEXT("END"));
+			break;
+		case VK_NEXT:
+			wsprintf(Key_push, TEXT("%s"), TEXT("PAGEDOWN"));
+			break;
 		}
+		SetWindowText(InEdit, Key_push);
 		InvalidateRect(hWnd, NULL, TRUE);
 		return 0;
 	case WM_PAINT:
