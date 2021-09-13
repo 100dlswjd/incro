@@ -1,8 +1,0 @@
-﻿  incro.cpp
-D:\git\incro\incro\incro.cpp(190,12): error C3863: 배열 형식 'TCHAR [128]'은(는) 할당할 수 없습니다.
-D:\git\incro\incro\incro.cpp(191,31): error C2664: 'BOOL SetWindowTextW(HWND,LPCWSTR)': 인수 2을(를) 'WPARAM'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
-D:\git\incro\incro\incro.cpp(191,25): message : 정수 계열 형식에서 포인터 형식으로 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h(8910,1): message : 'SetWindowTextW' 선언을 참조하십시오.
-D:\git\incro\incro\incro.cpp(195,32): error C2664: 'BOOL SetWindowTextW(HWND,LPCWSTR)': 인수 2을(를) 'WPARAM'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
-D:\git\incro\incro\incro.cpp(195,26): message : 정수 계열 형식에서 포인터 형식으로 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h(8910,1): message : 'SetWindowTextW' 선언을 참조하십시오.
