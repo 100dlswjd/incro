@@ -300,7 +300,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		CreateWindow(TEXT("button"), TEXT("추가"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 20, 200, 60, 25, hWnd, (HMENU)5, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("삽입"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 100, 200, 60, 25, hWnd, (HMENU)6, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("반복"), WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 180, 200, 60, 25, hWnd, (HMENU)7, g_hInst, NULL);
-
+		CheckRadioButton(hWnd, 5, 6, 5);
 		Wndkeyboard = CreateWindow(keyboard_macro, keyboard_macro, WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, (HMENU)NULL, g_hInst, NULL);
 
 		Wndmouse = CreateWindow(mouse_macro, mouse_macro, WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, (HMENU)NULL, g_hInst, NULL);
