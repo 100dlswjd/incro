@@ -155,7 +155,7 @@ LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		CreateWindow(TEXT("button"), TEXT("땐 상태"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 100, 70, 20, hWnd, (HMENU)4, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("오른쪽 클릭"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 120,110, 20, hWnd, (HMENU)5, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("오른쪽 누른상태"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 140, 150, 20, hWnd, (HMENU)6, g_hInst, NULL);
-
+		CheckRadioButton(hWnd, 1, 6, 1);
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		return 0;
 	case WM_CLOSE:
@@ -263,7 +263,8 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		//CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 100, 81, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
 		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 130, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
 		CreateWindow(TEXT("button"), TEXT("한번누름"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | WS_GROUP, 20, 40, 90, 30, hWnd, (HMENU)1, g_hInst, NULL);
-		CreateWindow(TEXT("button"), TEXT("누르고있기"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON , 20, 65, 110, 30, hWnd, (HMENU)1, g_hInst, NULL);
+		CreateWindow(TEXT("button"), TEXT("누르고있기"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON , 20, 65, 110, 30, hWnd, (HMENU)2, g_hInst, NULL);
+		CheckRadioButton(hWnd, 1, 2, 1);
 		InEdit = CreateWindow(TEXT("edit"), NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED , 20, 100, 80, 20, hWnd, (HMENU)2, g_hInst, NULL);
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		return 0;
