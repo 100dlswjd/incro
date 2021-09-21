@@ -270,8 +270,7 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_CLOSE:
 		ShowWindow(hWnd, SW_HIDE);
-		return 0;
-	
+		return 0;	
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
