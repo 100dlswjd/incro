@@ -1,7 +1,7 @@
 #include<windows.h>
 #include"resource.h"
 
-#define ID_EDIT 100
+//#define ID_EDIT 100
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK keyProc(HWND, UINT, WPARAM, LPARAM);
@@ -96,10 +96,17 @@ LRESULT CALLBACK timeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_CREATE:
-		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 70, 81, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
-		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 100, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
+		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 70, 81, 20, hWnd, (HMENU)100, g_hInst, 0);
+		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 100, 81, 20, hWnd, (HMENU)1, g_hInst, MB_OK);
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
 		//GetWindowText(hEdit, str, 128);
+		return 0;
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case 1: // 확인 눌렀는지 체크
+			DestroyWindow(hWnd);
+			return 0;
+		}
 		return 0;
 	case WM_CLOSE:
 		ShowWindow(hWnd, SW_HIDE);
@@ -146,8 +153,8 @@ LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		EndPaint(hWnd, &ps);
 		return 0;	
 	case WM_CREATE:
-		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 180, 40, 40, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
-		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 180, 70, 40, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
+		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 180, 40, 40, 20, hWnd, (HMENU)100, g_hInst, 0);
+		CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 180, 70, 40, 20, hWnd, (HMENU)100, g_hInst, 0);
 		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 170, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
 		CreateWindow(TEXT("button"), TEXT("이동"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 40, 50, 20, hWnd, (HMENU)1, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("왼쪽클릭"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 60, 80, 20, hWnd, (HMENU)2, g_hInst, NULL);
@@ -157,6 +164,14 @@ LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		CreateWindow(TEXT("button"), TEXT("오른쪽 누른상태"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 10, 140, 150, 20, hWnd, (HMENU)6, g_hInst, NULL);
 		CheckRadioButton(hWnd, 1, 6, 1);
 		MoveWindow(hWnd, screenCx / 2 - 100, screenCy / 2 - 100, screenCx / 2 + 100, screenCy / 2 + 100, TRUE);
+		return 0;
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case 0:  //  버튼눌렀는지 체크
+			// 체크된 상태에 따라 다르게 작동
+			DestroyWindow(hWnd);
+			break;
+		}
 		return 0;
 	case WM_CLOSE:
 		ShowWindow(hWnd, SW_HIDE);
@@ -177,6 +192,7 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int x = 20;
 	static int y = 20;
 	TCHAR Key_push[128];	
+	HWND button1;
 
 	switch (iMessage) {
 	case WM_GETMINMAXINFO:
@@ -261,7 +277,7 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_CREATE:
 		//CreateWindow(TEXT("EDIT"), NULL, WS_BORDER | WS_CHILD | WS_VISIBLE, 52, 100, 81, 20, hWnd, (HMENU)ID_EDIT, g_hInst, 0);
-		CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 130, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
+		button1 = CreateWindow(TEXT("button"), TEXT("확인"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 52, 130, 81, 20, hWnd, (HMENU)0, g_hInst, MB_OK);
 		CreateWindow(TEXT("button"), TEXT("한번누름"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | WS_GROUP, 20, 40, 90, 30, hWnd, (HMENU)1, g_hInst, NULL);
 		CreateWindow(TEXT("button"), TEXT("누르고있기"), WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON , 20, 65, 110, 30, hWnd, (HMENU)2, g_hInst, NULL);
 		CheckRadioButton(hWnd, 1, 2, 1);
@@ -273,6 +289,14 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;	
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		return 0;
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case 0: // 확인 버튼 누름
+			// 체크 상태 확인 후 체크된 상태에 따라 다르게 작동 할것			
+			DestroyWindow(hWnd);
+			break;		
+		}
 		return 0;
 	}
 	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
