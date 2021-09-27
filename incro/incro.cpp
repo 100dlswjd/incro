@@ -169,7 +169,8 @@ LRESULT CALLBACK mouseProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		switch (LOWORD(wParam)) {
 		case 0:  //  버튼눌렀는지 체크
 			// 체크된 상태에 따라 다르게 작동
-			DestroyWindow(hWnd);
+			//DestroyWindow(hWnd);
+			ShowWindow(hWnd, SW_HIDE);
 			break;
 		}
 		return 0;
@@ -294,7 +295,8 @@ LRESULT CALLBACK keyProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (LOWORD(wParam)) {
 		case 0: // 확인 버튼 누름
 			// 체크 상태 확인 후 체크된 상태에 따라 다르게 작동 할것			
-			DestroyWindow(hWnd);
+			//DestroyWindow(hWnd);
+			ShowWindow(hWnd, SW_HIDE);
 			break;		
 		}
 		return 0;
